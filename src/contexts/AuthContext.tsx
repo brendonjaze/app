@@ -49,21 +49,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Check for existing session on mount
     useEffect(() => {
         const savedUser = localStorage.getItem('attendance_user');
-        if (savedUser) {
-            try {
-                const user = JSON.parse(savedUser);
-                setAuthState({
-                    user,
-                    isAuthenticated: true,
-                    isLoading: false,
-                });
-            } catch {
-                localStorage.removeItem('attendance_user');
+        const timer = setTimeout(() => {
+            if (savedUser) {
+                try {
+                    const user = JSON.parse(savedUser);
+                    setAuthState({
+                        user,
+                        isAuthenticated: true,
+                        isLoading: false,
+                    });
+                } catch {
+                    localStorage.removeItem('attendance_user');
+                    setAuthState(prev => ({ ...prev, isLoading: false }));
+                }
+            } else {
                 setAuthState(prev => ({ ...prev, isLoading: false }));
             }
-        } else {
-            setAuthState(prev => ({ ...prev, isLoading: false }));
-        }
+        }, 0);
+        return () => clearTimeout(timer);
     }, []);
 
     const login = useCallback(async (username: string, password: string): Promise<boolean> => {

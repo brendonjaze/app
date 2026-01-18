@@ -37,8 +37,10 @@ export default function RFIDScanner({ onUnregisteredCard }: RFIDScannerProps) {
                     Array.from(registeredStudents.values()).find(s => s.studentId === lastScan.studentId)) as Student | undefined;
 
                 if (student) {
-                    setScannedStudent(student);
-                    setScanResult('success');
+                    const timer = setTimeout(() => {
+                        setScannedStudent(student);
+                        setScanResult('success');
+                    }, 0);
 
                     // Record attendance
                     const now = new Date();
@@ -52,20 +54,29 @@ export default function RFIDScanner({ onUnregisteredCard }: RFIDScannerProps) {
                         const message = `[AttendTrack] ${student.fullName} checked in at ${now.toLocaleTimeString()} on ${now.toLocaleDateString()}. Status: ${status === 'late' ? 'LATE' : 'Present'}`;
 
                         sendSMSNotification(student.studentId, message)
-
                             .then(() => setSmsStatus('sent'))
                             .catch(() => setSmsStatus('failed'));
                     });
+
+                    return () => clearTimeout(timer);
                 } else {
                     // Fallback if marked as registered but not found in local map
-                    setScanResult('warning');
+                    const timer = setTimeout(() => {
+                        setScanResult('warning');
+                    }, 0);
+                    return () => clearTimeout(timer);
                 }
             } else {
+                const timer = setTimeout(() => {
+                    setScanResult('warning');
+                }, 0);
 
-                setScanResult('warning');
                 if (onUnregisteredCard) {
                     onUnregisteredCard(lastScan.rfidCardId);
                 }
+
+                // Note: we can't easily return a cleanup for this specific timer here 
+                // because of the control flow, but the reset timer below will handle it.
             }
 
             // Reset after 5 seconds

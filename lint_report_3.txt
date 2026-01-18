@@ -1,0 +1,21 @@
+
+C:\Users\brendon.lambago\Attendance Tracking System\app\src\app\(dashboard)\dashboard\page.tsx
+  9:13  warning  'user' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\brendon.lambago\Attendance Tracking System\app\src\app\(dashboard)\records\page.tsx
+  64:11  warning  'studentsArray' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  69:15  warning  'todayRecords' is assigned a value but never used   @typescript-eslint/no-unused-vars
+
+C:\Users\brendon.lambago\Attendance Tracking System\app\src\app\(dashboard)\settings\page.tsx
+  10:22  warning  'user' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\brendon.lambago\Attendance Tracking System\app\src\components\RFIDScanner\RFIDScanner.tsx
+  17:9   warning  'pendingScan' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  70:23  warning  'timer' is assigned a value but never used        @typescript-eslint/no-unused-vars
+
+C:\Users\brendon.lambago\Attendance Tracking System\app\src\components\RegistrationForm\RegistrationForm.tsx
+   43:13  warning  'addToast' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  263:18  warning  'error' is defined but never used              @typescript-eslint/no-unused-vars
+
+??? 8 problems (0 errors, 8 warnings)
+

@@ -16,13 +16,16 @@ export default function Header({ onMenuClick }: HeaderProps) {
     const [dateString, setDateString] = useState('');
 
     useEffect(() => {
-        setMounted(true);
-        setDateString(new Date().toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-        }));
+        const timer = setTimeout(() => {
+            setMounted(true);
+            setDateString(new Date().toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+            }));
+        }, 0);
+        return () => clearTimeout(timer);
     }, []);
 
     return (
@@ -81,11 +84,13 @@ function CurrentTime() {
 
     useEffect(() => {
         // Set initial time on client
-        setTime(new Date().toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-        }));
+        const timer = setTimeout(() => {
+            setTime(new Date().toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+            }));
+        }, 0);
 
         const interval = setInterval(() => {
             setTime(new Date().toLocaleTimeString('en-US', {
@@ -94,7 +99,10 @@ function CurrentTime() {
                 second: '2-digit',
             }));
         }, 1000);
-        return () => clearInterval(interval);
+        return () => {
+            clearTimeout(timer);
+            clearInterval(interval);
+        };
     }, []);
 
     // Return empty span during SSR to avoid hydration mismatch

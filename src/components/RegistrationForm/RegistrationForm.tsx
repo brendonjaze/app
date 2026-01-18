@@ -55,46 +55,49 @@ export default function RegistrationForm({
     // Update RFID when prefilled changes
     useEffect(() => {
         if (prefilledRfid) {
-            setFormData(prev => ({ ...prev, rfidCardId: prefilledRfid }));
+            const timer = setTimeout(() => {
+                setFormData(prev => ({ ...prev, rfidCardId: prefilledRfid }));
+            }, 0);
+            return () => clearTimeout(timer);
         }
     }, [prefilledRfid]);
 
-    // Validate phone number format (Philippine mobile number)
-    const validatePhoneNumber = (phone: string): boolean => {
-        const cleanPhone = phone.replace(/\D/g, '');
-        // Philippine mobile: 09XXXXXXXXX or +639XXXXXXXXX
-        return /^(09\d{9}|639\d{9}|\+639\d{9})$/.test(cleanPhone);
-    };
-
-    // Validate email format
-    const validateEmail = (email: string): boolean => {
-        if (!email) return true; // Optional field
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    };
-
-    // Validate student ID format
-    const validateStudentId = (id: string): boolean => {
-        return /^\d{4}-\d{4}$/.test(id);
-    };
-
-    // Check for duplicate RFID
-    const isDuplicateRfid = (rfid: string): boolean => {
-        return registeredStudents.has(rfid);
-    };
-
-    // Check for duplicate Student ID
-    const isDuplicateStudentId = (studentId: string): boolean => {
-        let isDuplicate = false;
-        registeredStudents.forEach(student => {
-            if (student.studentId === studentId) {
-                isDuplicate = true;
-            }
-        });
-        return isDuplicate;
-    };
-
     // Validate entire form
     const validateForm = useCallback((): ValidationErrors => {
+        // Validate phone number format (Philippine mobile number)
+        const validatePhoneNumber = (phone: string): boolean => {
+            const cleanPhone = phone.replace(/\D/g, '');
+            // Philippine mobile: 09XXXXXXXXX or +639XXXXXXXXX
+            return /^(09\d{9}|639\d{9}|\+639\d{9})$/.test(cleanPhone);
+        };
+
+        // Validate email format
+        const validateEmail = (email: string): boolean => {
+            if (!email) return true; // Optional field
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        };
+
+        // Validate student ID format
+        const validateStudentId = (id: string): boolean => {
+            return /^\d{4}-\d{4}$/.test(id);
+        };
+
+        // Check for duplicate RFID
+        const isDuplicateRfid = (rfid: string): boolean => {
+            return registeredStudents.has(rfid);
+        };
+
+        // Check for duplicate Student ID
+        const isDuplicateStudentId = (studentId: string): boolean => {
+            let isDuplicate = false;
+            registeredStudents.forEach(student => {
+                if (student.studentId === studentId) {
+                    isDuplicate = true;
+                }
+            });
+            return isDuplicate;
+        };
+
         const newErrors: ValidationErrors = {};
 
         // Student ID

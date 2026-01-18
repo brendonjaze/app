@@ -4,7 +4,7 @@ import React, { useState, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useAuth, useAttendance, useRFID } from '@/contexts';
 import { AttendanceTable } from '@/components';
-import { AttendanceFilter } from '@/types';
+import { AttendanceFilter, AttendanceStatus } from '@/types';
 import styles from './page.module.css';
 
 export default function RecordsPage() {
@@ -181,7 +181,7 @@ export default function RecordsPage() {
                             value={filters.status || ''}
                             onChange={(e) => setFilters(prev => ({
                                 ...prev,
-                                status: e.target.value ? e.target.value as any : undefined
+                                status: e.target.value ? e.target.value as AttendanceStatus : undefined
                             }))}
                         >
                             <option value="">All Statuses</option>

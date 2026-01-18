@@ -21,6 +21,20 @@ interface RFIDContextType {
 
 const RFIDContext = createContext<RFIDContextType | undefined>(undefined);
 
+interface BackendStudent {
+    id: string;
+    student_id: string;
+    name: string;
+    rfid: string;
+    parent_name?: string;
+    parent_phone: string;
+    student_phone?: string;
+    course?: string;
+    section?: string;
+    year_level?: number;
+    created_at: string;
+}
+
 export function RFIDProvider({ children }: { children: ReactNode }) {
     const { addToast } = useToast();
     const wsRef = useRef<WebSocket | null>(null);
@@ -55,7 +69,7 @@ export function RFIDProvider({ children }: { children: ReactNode }) {
 
             const data = await response.json();
             const map = new Map<string, Student>();
-            data.forEach((s: any) => {
+            data.forEach((s: BackendStudent) => {
                 // Map backend fields to frontend Student interface
                 const student: Student = {
                     id: s.id,
@@ -103,11 +117,12 @@ export function RFIDProvider({ children }: { children: ReactNode }) {
         };
 
         const heartbeatInterval = setInterval(simulateConnection, 5000);
+        const currentWs = wsRef.current;
 
         return () => {
             clearInterval(heartbeatInterval);
-            if (wsRef.current) {
-                wsRef.current.close();
+            if (currentWs) {
+                currentWs.close();
             }
         };
     }, []);
@@ -234,12 +249,13 @@ export function RFIDProvider({ children }: { children: ReactNode }) {
                 title: 'Student Registered',
                 message: `${student.fullName} has been successfully registered.`,
             });
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Registration Error:', error);
+            const errorMessage = error instanceof Error ? error.message : 'An error occurred during registration.';
             addToast({
                 type: 'error',
                 title: 'Registration Failed',
-                message: error.message || 'An error occurred during registration.',
+                message: errorMessage,
             });
             throw error;
         } finally {
