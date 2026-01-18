@@ -1,0 +1,139 @@
+.scanner {
+    width: 320px;
+    height: 320px;
+    background: #ffffff;
+    border: 2px solid var(--border-color);
+    border-radius: 2rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+}
+
+.scanner.active {
+    border-color: var(--primary);
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.15);
+}
+
+.scanner.success {
+    border-color: var(--success);
+    background: #f0fdf4;
+}
+
+.scanner.warning {
+    border-color: var(--warning);
+    background: #fffbeb;
+}
+
+.iconWrapper {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-secondary);
+    border-radius: 50%;
+    color: var(--text-muted);
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.scanner.active .iconWrapper {
+    color: var(--primary);
+    background: var(--primary-light);
+}
+
+.scanner.success .iconWrapper {
+    color: var(--success);
+    background: #dcfce7;
+}
+
+.scanner.warning .iconWrapper {
+    color: var(--warning);
+    background: #fef3c7;
+}
+
+.label {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    z-index: 2;
+}
+
+.scanner.active .label {
+    color: var(--primary);
+}
+
+.scanLine {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--primary), transparent);
+    box-shadow: 0 0 10px var(--primary);
+    z-index: 1;
+    display: none;
+}
+
+.scanner.active .scanLine {
+    display: block;
+    animation: scan 2s linear infinite;
+}
+
+@keyframes scan {
+    0% {
+        top: 0;
+    }
+
+    100% {
+        top: 100%;
+    }
+}
+
+.statusOverlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+    z-index: 10;
+    backdrop-filter: blur(4px);
+}
+
+.statusTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.statusText {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+/* Animations */
+.pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: .5;
+    }
+}
