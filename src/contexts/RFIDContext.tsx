@@ -54,7 +54,7 @@ export function RFIDProvider({ children }: { children: ReactNode }) {
             if (!response.ok) throw new Error('Failed to fetch students');
 
             const data = await response.json();
-            const map = new Map();
+            const map = new Map<string, Student>();
             data.forEach((s: any) => {
                 // Map backend fields to frontend Student interface
                 const student: Student = {
@@ -75,6 +75,7 @@ export function RFIDProvider({ children }: { children: ReactNode }) {
                 map.set(student.rfidCardId, student);
             });
             setRegisteredStudents(map);
+
         } catch (error) {
             console.error('Error fetching students:', error);
             addToast({

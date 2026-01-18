@@ -143,14 +143,15 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 {/* Logo */}
                 <div className={styles.logo}>
                     <div className={styles.logoIcon}>
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-                            <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                            <path d="M2 17l10 5 10-5" />
+                            <path d="M2 12l10 5 10-5" />
                         </svg>
                     </div>
                     <div className={styles.logoText}>
                         <span className={styles.logoTitle}>AttendTrack</span>
-                        <span className={styles.logoSubtitle}>RFID Attendance</span>
+                        <span className={styles.logoSubtitle}>RFID System</span>
                     </div>
                 </div>
 
@@ -178,18 +179,19 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                             {user?.fullName?.charAt(0) || 'U'}
                         </div>
                         <div className={styles.userDetails}>
-                            <span className={styles.userName}>{user?.fullName}</span>
-                            <span className={styles.userRole}>{user?.role}</span>
+                            <span className={styles.userName}>{user?.fullName || 'User'}</span>
+                            <span className={styles.userRole}>{user?.role || 'Guest'}</span>
                         </div>
                     </div>
                     <button className={styles.logoutBtn} onClick={logout} title="Logout">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                             <polyline points="16 17 21 12 16 7" />
                             <line x1="21" y1="12" x2="9" y2="12" />
                         </svg>
                     </button>
                 </div>
+
             </aside>
         </>
     );

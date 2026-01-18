@@ -31,10 +31,10 @@ export default function RFIDScanner({ onUnregisteredCard }: RFIDScannerProps) {
     // Handle scan results
     useEffect(() => {
         if (lastScan) {
-            if (lastScan.isRegistered && lastScan.studentId) {
+            if (lastScan.isRegistered) {
                 // Find the student by RFID Card ID or Student ID
-                const student = registeredStudents.get(lastScan.rfidCardId) ||
-                    Array.from(registeredStudents.values()).find(s => s.studentId === lastScan.studentId);
+                const student = (registeredStudents.get(lastScan.rfidCardId) ||
+                    Array.from(registeredStudents.values()).find(s => s.studentId === lastScan.studentId)) as Student | undefined;
 
                 if (student) {
                     setScannedStudent(student);
@@ -52,11 +52,16 @@ export default function RFIDScanner({ onUnregisteredCard }: RFIDScannerProps) {
                         const message = `[AttendTrack] ${student.fullName} checked in at ${now.toLocaleTimeString()} on ${now.toLocaleDateString()}. Status: ${status === 'late' ? 'LATE' : 'Present'}`;
 
                         sendSMSNotification(student.studentId, message)
+
                             .then(() => setSmsStatus('sent'))
                             .catch(() => setSmsStatus('failed'));
                     });
+                } else {
+                    // Fallback if marked as registered but not found in local map
+                    setScanResult('warning');
                 }
             } else {
+
                 setScanResult('warning');
                 if (onUnregisteredCard) {
                     onUnregisteredCard(lastScan.rfidCardId);

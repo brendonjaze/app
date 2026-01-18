@@ -19,9 +19,11 @@
 
 .main {
     flex: 1;
-    padding: 1.5rem;
+    padding: 2rem;
     overflow-x: hidden;
+    background: var(--bg-secondary);
 }
+
 
 @media (max-width: 768px) {
     .main {
