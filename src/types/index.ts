@@ -25,6 +25,7 @@ export interface Student {
   rfidCardId: string;
   guardianName: string;
   guardianPhone: string;
+  studentPhone?: string;
   email?: string;
   course?: string;
   section?: string;

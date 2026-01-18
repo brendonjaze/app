@@ -32,13 +32,9 @@ export default function RFIDScanner({ onUnregisteredCard }: RFIDScannerProps) {
     useEffect(() => {
         if (lastScan) {
             if (lastScan.isRegistered && lastScan.studentId) {
-                // Find the student
-                let student: Student | null = null;
-                registeredStudents.forEach(s => {
-                    if (s.studentId === lastScan.studentId) {
-                        student = s;
-                    }
-                });
+                // Find the student by RFID Card ID or Student ID
+                const student = registeredStudents.get(lastScan.rfidCardId) ||
+                    Array.from(registeredStudents.values()).find(s => s.studentId === lastScan.studentId);
 
                 if (student) {
                     setScannedStudent(student);
@@ -53,9 +49,9 @@ export default function RFIDScanner({ onUnregisteredCard }: RFIDScannerProps) {
                     recordAttendance(student.studentId, status).then(() => {
                         // Send SMS notification
                         setSmsStatus('sending');
-                        const message = `[AttendTrack] ${student!.fullName} checked in at ${now.toLocaleTimeString()} on ${now.toLocaleDateString()}. Status: ${status === 'late' ? 'LATE' : 'Present'}`;
+                        const message = `[AttendTrack] ${student.fullName} checked in at ${now.toLocaleTimeString()} on ${now.toLocaleDateString()}. Status: ${status === 'late' ? 'LATE' : 'Present'}`;
 
-                        sendSMSNotification(student!.studentId, message)
+                        sendSMSNotification(student.studentId, message)
                             .then(() => setSmsStatus('sent'))
                             .catch(() => setSmsStatus('failed'));
                     });

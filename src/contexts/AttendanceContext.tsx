@@ -111,12 +111,7 @@ export function AttendanceProvider({ children }: { children: ReactNode }) {
         await new Promise(resolve => setTimeout(resolve, 500));
 
         // Find student
-        let student = null;
-        registeredStudents.forEach(s => {
-            if (s.studentId === studentId) {
-                student = s;
-            }
-        });
+        const student = Array.from(registeredStudents.values()).find(s => s.studentId === studentId);
 
         if (!student) {
             setIsLoading(false);
@@ -204,12 +199,7 @@ export function AttendanceProvider({ children }: { children: ReactNode }) {
         message: string
     ): Promise<SMSNotification> => {
         // Find student
-        let student = null;
-        registeredStudents.forEach(s => {
-            if (s.studentId === studentId) {
-                student = s;
-            }
-        });
+        const student = Array.from(registeredStudents.values()).find(s => s.studentId === studentId);
 
         if (!student) {
             throw new Error('Student not found');

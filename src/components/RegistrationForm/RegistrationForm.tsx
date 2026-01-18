@@ -232,31 +232,34 @@ export default function RegistrationForm({
     const handleSubmit = async () => {
         setIsSubmitting(true);
 
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        try {
+            const newStudent: Student = {
+                id: `student-${Date.now()}`,
+                studentId: formData.studentId,
+                fullName: formData.fullName,
+                rfidCardId: formData.rfidCardId,
+                guardianName: formData.guardianName,
+                guardianPhone: formData.guardianPhone,
+                email: formData.email,
+                course: formData.course,
+                section: formData.section,
+                yearLevel: formData.yearLevel,
+                registeredAt: new Date(),
+                registeredBy: 'admin', // Would come from auth context
+                isActive: true,
+            };
 
-        const newStudent: Student = {
-            id: `student-${Date.now()}`,
-            studentId: formData.studentId,
-            fullName: formData.fullName,
-            rfidCardId: formData.rfidCardId,
-            guardianName: formData.guardianName,
-            guardianPhone: formData.guardianPhone,
-            email: formData.email,
-            course: formData.course,
-            section: formData.section,
-            yearLevel: formData.yearLevel,
-            registeredAt: new Date(),
-            registeredBy: 'admin', // Would come from auth context
-            isActive: true,
-        };
+            await registerStudent(newStudent);
 
-        registerStudent(newStudent);
-        setIsSubmitting(false);
-        setShowConfirmation(false);
+            setIsSubmitting(false);
+            setShowConfirmation(false);
 
-        if (onSuccess) {
-            onSuccess(newStudent);
+            if (onSuccess) {
+                onSuccess(newStudent);
+            }
+        } catch (error) {
+            setIsSubmitting(false);
+            // Error handling is already done in registerStudent via addToast
         }
     };
 
