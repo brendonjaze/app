@@ -218,7 +218,11 @@ export function RFIDProvider({ children }: { children: ReactNode }) {
                     studentId: student.studentId,
                     name: student.fullName,
                     studentPhone: student.studentPhone || student.guardianPhone, // Fallback if not provided
-                    parentPhone: student.guardianPhone
+                    parentPhone: student.guardianPhone,
+                    guardianName: student.guardianName,
+                    course: student.course,
+                    section: student.section,
+                    yearLevel: student.yearLevel
                 }),
             });
 
