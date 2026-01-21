@@ -228,7 +228,8 @@ export function RFIDProvider({ children }: { children: ReactNode }) {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to register student');
+                // Check for 'error' or 'message' property from backend
+                throw new Error(errorData.error || errorData.message || 'Failed to register student');
             }
 
             const result = await response.json();

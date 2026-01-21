@@ -1,122 +1,296 @@
-.form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+/* RegistrationForm.module.css */
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
 }
 
-.stepContainer {
-    margin-bottom: 2rem;
+/* Header */
+.header {
+    text-align: center;
+    margin-bottom: 2.5rem;
 }
 
-.stepper {
+.title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--foreground);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.025em;
+}
+
+.subtitle {
+    color: var(--muted-foreground);
+    font-size: 0.95rem;
+}
+
+/* Progress Stepper */
+.progress {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
     position: relative;
+    padding: 0 1rem;
 }
 
-.stepper::after {
-    content: '';
-    position: absolute;
-    top: 20px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--border-color);
-    z-index: 1;
-}
-
-.step {
+.progressStep {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
     position: relative;
     z-index: 2;
-    background: transparent;
+    flex: 1;
+    /* Distribute space */
 }
 
 .stepNumber {
-    width: 40px;
-    height: 40px;
+    width: 2.5rem;
+    height: 2.5rem;
     border-radius: 50%;
-    background: #ffffff;
-    border: 2px solid var(--border-color);
+    background: var(--background);
+    border: 2px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
-    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
     transition: all 0.3s ease;
-}
-
-.step.active .stepNumber {
-    border-color: var(--primary);
-    color: var(--primary);
-    box-shadow: 0 0 0 4px var(--primary-light);
-}
-
-.step.completed .stepNumber {
-    background: var(--success);
-    border-color: var(--success);
-    color: white;
 }
 
 .stepLabel {
     font-size: 0.75rem;
     font-weight: 600;
-    color: var(--text-muted);
+    color: var(--muted-foreground);
     text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.3s ease;
 }
 
-.step.active .stepLabel {
+.progressStep.active .stepNumber {
+    border-color: var(--primary);
+    color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-light, rgba(0, 0, 0, 0.05));
+}
+
+.progressStep.active .stepLabel {
     color: var(--primary);
 }
 
-.grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
+.progressStep.completed .stepNumber {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--primary-foreground, white);
 }
 
-@media (max-width: 640px) {
-    .grid {
-        grid-template-columns: 1fr;
-    }
+.progressLine {
+    height: 2px;
+    background: var(--border);
+    flex: 1;
+    margin: 0 -20px;
+    margin-bottom: 22px;
+    /* Align with center of circle */
+    z-index: 1;
 }
 
-.actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border-color);
-}
-
-.confirmModal {
+/* Form Styles */
+.form {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
-.infoGrid {
+.stepContent {
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.required {
+    color: var(--destructive);
+    margin-left: 0.25rem;
+}
+
+.rfidInput {
+    position: relative;
+}
+
+.rfidBadge {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.5rem;
+    background: var(--success-light, #ecfdf5);
+    color: var(--success, #10b981);
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 9999px;
+    pointer-events: none;
+}
+
+.splitGroup {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
-    padding: 1.5rem;
-    background: var(--bg-secondary);
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+}
+
+.actions button:first-child {
+    margin-right: auto;
+    /* Push "Back" or "Cancel" to left if needed, or keep right aligned */
+}
+
+/* Center buttons or keep right depending on pref. Right is standard for wizards */
+
+/* Confirmation Overlay (Modal) */
+.confirmationOverlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+    padding: 1rem;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.confirmationModal {
+    background: var(--background, #fff);
     border-radius: 1rem;
-    border: 1px solid var(--border-color);
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.infoLabel {
-    font-size: 0.75rem;
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.confirmationIcon {
+    width: 3.5rem;
+    height: 3.5rem;
+    background: var(--primary-light, #eff6ff);
+    color: var(--primary, #3b82f6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem auto;
+}
+
+.confirmationTitle {
+    font-size: 1.5rem;
     font-weight: 700;
-    color: var(--text-muted);
-    text-transform: uppercase;
+    color: var(--foreground);
+    text-align: center;
+    margin-bottom: 0.5rem;
 }
 
-.infoValue {
+.confirmationText {
+    text-align: center;
+    color: var(--muted-foreground);
+    margin-bottom: 2rem;
+}
+
+.summaryCard {
+    background: var(--accent, #f9fafb);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.summaryRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.summaryRow:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.summaryLabel {
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+    font-weight: 500;
+}
+
+.summaryValue {
+    font-size: 0.9rem;
+    color: var(--foreground);
     font-weight: 600;
-    color: var(--text-primary);
+    text-align: right;
+    max-width: 60%;
+    word-break: break-word;
+}
+
+.confirmationActions {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 1rem;
+}
+
+.spinner {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
