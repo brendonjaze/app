@@ -21,15 +21,15 @@ const INITIAL_FORM_DATA: RegistrationFormData = {
     email: '',
     course: '',
     section: '',
-    yearLevel: 1,
+    yearLevel: 11,
 };
 
-const COURSES = [
-    'Computer Science',
-    'Information Technology',
-    'Information Systems',
-    'Computer Engineering',
-    'Data Science',
+const STRANDS = [
+    'STEM (Science, Technology, Engineering, and Mathematics)',
+    'HUMSS (Humanities and Social Sciences)',
+    'ABM (Accountancy, Business, and Management)',
+    'GAS (General Academic Strand)',
+    'TVL (Technical-Vocational-Livelihood)',
 ];
 
 const SECTIONS = ['A', 'B', 'C', 'D', 'E'];
@@ -45,6 +45,7 @@ export default function RegistrationForm({
     const [formData, setFormData] = useState<RegistrationFormData>({
         ...INITIAL_FORM_DATA,
         rfidCardId: prefilledRfid || '',
+        yearLevel: 11, // Default to Grade 11
     });
     const [errors, setErrors] = useState<ValidationErrors>({});
     const [touched, setTouched] = useState<Record<string, boolean>>({});
@@ -140,9 +141,9 @@ export default function RegistrationForm({
             newErrors.email = 'Invalid email format';
         }
 
-        // Course
+        // Course (Validation now checks STRANDS)
         if (!formData.course) {
-            newErrors.course = 'Please select a course';
+            newErrors.course = 'Please select a strand';
         }
 
         // Section
@@ -315,9 +316,9 @@ export default function RegistrationForm({
                                 <span className={styles.summaryValue}>{formData.guardianPhone}</span>
                             </div>
                             <div className={styles.summaryRow}>
-                                <span className={styles.summaryLabel}>Course/Section</span>
+                                <span className={styles.summaryLabel}>Strand/Section</span>
                                 <span className={styles.summaryValue}>
-                                    {formData.course} - {formData.section} (Year {formData.yearLevel})
+                                    {formData.course} - {formData.section} (Grade {formData.yearLevel})
                                 </span>
                             </div>
                         </div>
@@ -574,7 +575,7 @@ export default function RegistrationForm({
                     <div className={styles.stepContent}>
                         <div className="form-group">
                             <label className="form-label" htmlFor="course">
-                                Course/Program <span className={styles.required}>*</span>
+                                Strand <span className={styles.required}>*</span>
                             </label>
                             <select
                                 id="course"
@@ -584,9 +585,9 @@ export default function RegistrationForm({
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             >
-                                <option value="">Select a course</option>
-                                {COURSES.map(course => (
-                                    <option key={course} value={course}>{course}</option>
+                                <option value="">Select a strand</option>
+                                {STRANDS.map(strand => (
+                                    <option key={strand} value={strand}>{strand}</option>
                                 ))}
                             </select>
                             {touched.course && errors.course && (
@@ -626,7 +627,7 @@ export default function RegistrationForm({
 
                             <div className="form-group">
                                 <label className="form-label" htmlFor="yearLevel">
-                                    Year Level <span className={styles.required}>*</span>
+                                    Grade Level <span className={styles.required}>*</span>
                                 </label>
                                 <select
                                     id="yearLevel"
@@ -635,8 +636,8 @@ export default function RegistrationForm({
                                     value={formData.yearLevel}
                                     onChange={handleChange}
                                 >
-                                    {[1, 2, 3, 4].map(year => (
-                                        <option key={year} value={year}>Year {year}</option>
+                                    {[11, 12].map(year => (
+                                        <option key={year} value={year}>Grade {year}</option>
                                     ))}
                                 </select>
                             </div>
